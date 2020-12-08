@@ -2,9 +2,9 @@
  * Klasa posiada jeden parametr typu sparametryzowanego (generics)
  * Zaznaczone jest tez że jest to klasa sparametryzowana<>
  * Parametr jest typu ogólnego T i jest przechowywany w zmiennej loot
- * Może to być parametr dowolnego typu
+ * Parametrem może być klasa pochodna od typu Loot
  */
-class LootBox<T>(item: T) {
+class LootBoxExtra<T : Loot>(item: T) {
     private var loot: T = item
     var open = false
 
@@ -22,15 +22,18 @@ class LootBox<T>(item: T) {
     }
 }
 
-class Fedora(val name: String, val value: Int)
+//najlepiej stworzyć klasę nadrzędna która będzie parametrem w klasie generic
+open class Loot(val value: Int)
 
-class Coin(val value: Int)
+class FedoraExtra(val name: String,  value: Int): Loot(value)
+
+class CoinExtra( value: Int): Loot(value)
 
 fun main(args: Array<String>) {
-    var obraz = Fedora("standardowy kapelusz", 15)
-    val lootBoxOne: LootBox<Fedora> = LootBox(obraz)
-    val coinIn = Coin(15)
-    val lootBoxTwo: LootBox<Coin> = LootBox(coinIn)
+    var obraz = FedoraExtra("standardowy kapelusz", 15)
+    val lootBoxOne: LootBox<FedoraExtra> = LootBox(obraz)
+    val coinIn = CoinExtra(15)
+    val lootBoxTwo: LootBox<CoinExtra> = LootBox(coinIn)
 
     lootBoxOne.fetch()?.run {
         println("Wyjąłeś $name za skrzyni")
